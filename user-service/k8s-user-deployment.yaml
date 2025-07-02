@@ -30,11 +30,12 @@ metadata:
   name: user-service
   namespace: user
 spec:
-  type: ClusterIP
+  type: NodePort
   selector:
     app: user-service
   ports:
     - port: 8089
       targetPort: 8089
+      nodePort: 30022
 
 #      nodePort: 30091     # Port accessible depuis l’extérieur (VM, navigateur)
