@@ -1,9 +1,13 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: user
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: user-service
-  labels:
-    app: user-service
+  namespace: user
 spec:
   replicas: 1
   selector:
@@ -16,19 +20,21 @@ spec:
     spec:
       containers:
         - name: user-service
-          image: marammanai/user-service:latest
+          image: marammanai/user-service:latest # 🔁 Remplace par ton image Docker
           ports:
-            - containerPort: 8080
-
+            - containerPort: 8089 # correspond au server.port défini dans application.properties
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: user-service
+  namespace: user
 spec:
-  type: ClusterIP
   selector:
     app: user-service
+  type: NodePort
   ports:
-    - port: 8080
-      targetPort: 8080
+    - protocol: TCP
+      port: 8089          # Ce que Kubernetes écoute dans le cluster
+      targetPort: 8089    # Ce que le conteneur expose
+#      nodePort: 30091     # Port accessible depuis l’extérieur (VM, navigateur)
