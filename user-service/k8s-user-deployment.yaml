@@ -20,9 +20,9 @@ spec:
     spec:
       containers:
         - name: user-service
-          image: marammanai/user-service:latest # 🔁 Remplace par ton image Docker
+          image: marammanai/user-service:latest
           ports:
-            - containerPort: 8089 # correspond au server.port défini dans application.properties
+            - containerPort: 8089
 ---
 apiVersion: v1
 kind: Service
@@ -30,11 +30,11 @@ metadata:
   name: user-service
   namespace: user
 spec:
+  type: ClusterIP
   selector:
     app: user-service
-  type: NodePort
   ports:
-    - protocol: TCP
-      port: 8089          # Ce que Kubernetes écoute dans le cluster
-      targetPort: 8089    # Ce que le conteneur expose
+    - port: 8089
+      targetPort: 8089
+
 #      nodePort: 30091     # Port accessible depuis l’extérieur (VM, navigateur)
